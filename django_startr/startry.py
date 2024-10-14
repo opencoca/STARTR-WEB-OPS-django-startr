@@ -10,9 +10,9 @@ from django.template import Context
 from six import iteritems
 
 
-class Baker(object):
+class Startr(object):
     """
-        Given a dictionary of apps and models, Baker will bake up a bunch of files that will help get your new app up
+        Given a dictionary of apps and models, Startr will bake up a bunch of files that will help get your new app up
         and running quickly.
     """
 
@@ -29,7 +29,7 @@ class Baker(object):
             self.remove_empty_startapp_files(app)
             for file_name in ["forms", "admin"]:
                 file_path = "%s/%s.py" % (app.path, file_name)
-                template_path = "django_baker/%s" % (file_name)
+                template_path = "django_startr/%s" % (file_name)
                 self.create_file_from_template(file_path, template_path, {"model_names": model_names})
             for model in models:
                 model_attributes = self.model_attributes(app, model)
@@ -64,7 +64,7 @@ class Baker(object):
                             model in models}
         for folder_name in ["views", "urls"]:
             file_path = "%s/%s/__init__.py" % (app.path, folder_name)
-            template_path = "django_baker/__init__%s" % folder_name
+            template_path = "django_startr/__init__%s" % folder_name
             self.create_file_from_template(file_path, template_path, {"app_label": app.label,
                                                                       "model_name_slugs": model_name_slugs,
                                                                       "model_names_dict": model_names_dict
@@ -100,12 +100,12 @@ class Baker(object):
         for folder_name in ["views", "urls"]:
             file_path = "%s/%s/%s_%s.py" % (model_attributes['app_path'], folder_name,
                                             model_attributes['model_name_slug'], folder_name)
-            template_path = "django_baker/%s" % (folder_name)
+            template_path = "django_startr/%s" % (folder_name)
             self.create_file_from_template(file_path, template_path, model_attributes)
         for file_name in ["base", "list", "detail", "create", "update", "delete"]:
             file_path = "%s/templates/%s/%s_%s.html" % (model_attributes['app_path'], model_attributes['app_label'],
                                                         model_attributes['model_name_slug'], file_name)
-            template_path = "django_baker/%s.html" % (file_name)
+            template_path = "django_startr/%s.html" % (file_name)
             self.create_file_from_template(file_path, template_path, model_attributes)
 
     def create_file_from_template(self, file_path, template_path, context_variables):

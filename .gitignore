@@ -1,5 +1,5 @@
 *.pyc
-django_baker.egg-info
+django_startr.egg-info
 dist
 bread
 pastries

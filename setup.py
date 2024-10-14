@@ -8,16 +8,16 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-baker',
+    name='django-startr',
     version='0.22',
-    packages=['django_baker'],
+    packages=['django_startr'],
     include_package_data=True,
     license='BSD License',
     description='Management command that generates views, forms, urls, admin, and templates for models',
     long_description=README,
-    url='https://github.com/krisfields/django-baker',
-    author='Kris Fields',
-    author_email='avalaunchit@gmail.com',
+    url='https://github.com/opencoca/STARTR-WEB-OPS-django-startr',
+    author='Alexander Somma',
+    author_email='asomma@startr.ca',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import {{ model_names|join:", " }}
-from django_baker.admin import ExtendedModelAdminMixin
+from django_startr.admin import ExtendedModelAdminMixin
 
 {% for model_name in model_names %}
 class {{ model_name }}Admin(ExtendedModelAdminMixin, admin.ModelAdmin):

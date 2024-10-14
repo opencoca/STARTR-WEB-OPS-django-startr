@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.exceptions import ImproperlyConfigured
 from django.apps import apps
 
-from ...bakery import Baker
+from ...startry import Startr
 
 
 class Command(BaseCommand):
@@ -19,8 +19,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ingredients = self.parse_bake_options(options["apps_and_models"])
-        baker = Baker()
-        baker.bake(ingredients)
+        startr = Startr()
+        startr.bake(ingredients)
 
     def parse_bake_options(self, apps_and_models):
         """
