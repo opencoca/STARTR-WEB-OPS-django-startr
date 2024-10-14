@@ -24,16 +24,16 @@ Add `'django_startr'` to `INSTALLED_APPS`.
 
 ## Usage
 
-Imagine your project is called **TechRocket**, and it has two apps: `launch` and `mission`.
+Imagine your project is called **TechRocket**, and it has an app `mission`.
 
 ```bash
-python manage.py startr launch mission
+python manage.py startapp mission
 ```
 
 This command generates the necessary files for all the models in both apps. If you only want specific models, like `Rocket` and `MissionControl`, you can narrow it down:
 
 ```bash
-python manage.py startr launch mission:Rocket,MissionControl
+python manage.py startr mission:Rocket,MissionControl
 ```
 
 To connect everything, add one URL pattern to your project's URLconf:
