@@ -1,8 +1,4 @@
-Got it! Here's a fully revised version, free of baked goods and with a fun, startup-inspired tone:
-
----
-
-# Django Startr
+# Django Startr Code
 
 Django Startr is here to turbocharge your project setup! With just a few commands, it auto-generates everything you need—views, forms, URLs, admin, and templates—for all the models in your `models.py`. Say goodbye to tedious boilerplate and hello to more time for innovation.
 
@@ -13,6 +9,8 @@ If you want more control, you can choose which models to start from and skip the
 ---
 
 ## Installing
+
+You can either clone the repository and install it manually, or add it as a submodule or use pip:
 
 ```bash
 pip install django-startr
@@ -29,12 +27,15 @@ Imagine your project is called **TechRocket**, and it has an app `mission`.
 ```bash
 python manage.py startapp mission
 ```
+At this point define your models in the `models.py` file in the `mission` app. Once you have defined your models, you can run the following command to generate the necessary files for all the models in both apps.
 
-This command generates the necessary files for all the models in both apps. If you only want specific models, like `Rocket` and `MissionControl`, you can narrow it down:
 
 ```bash
 python manage.py startr mission:Rocket,MissionControl
 ```
+This command generates the necessary files for all the models in both apps. If you only want specific models, like `Rocket` and `MissionControl`, you can narrow it down:
+
+
 
 To connect everything, add one URL pattern to your project's URLconf:
 
@@ -45,8 +46,8 @@ To connect everything, add one URL pattern to your project's URLconf:
 And voilà, you’ll have a working URL structure like this:
 
 ```
-www.techrocket.com/mission/rocket
-www.techrocket.com/mission/missioncontrol
+/mission/rocket
+/mission/missioncontrol
 ```
 
 If you want shorter URLs:
@@ -59,8 +60,8 @@ If you want shorter URLs:
 Now you’ve got:
 
 ```
-www.techrocket.com/rocket
-www.techrocket.com/missioncontrol
+/rocket
+/missioncontrol
 ```
 
 ---
@@ -122,7 +123,40 @@ Pull requests are always welcome!
 
 ## License
 
-Copyright 2019–2023 12787326 Canada Inc.
+Copyright 2023-2025 12787326 Canada Inc.
 
 Licensed under the AGPLv3: https://opensource.org/licenses/agpl-3.0
 
+Dual License Notice
+This project is dual-licensed under two licenses:
+
+All code and contributions prior to 2023 are licensed under the MIT License
+All code and contributions from 2023 onwards are licensed under the GNU Affero General Public License v3.0 (AGPL-3.0)
+
+MIT License (Pre-2023)
+Copyright (c) 2015 Kris Fields.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+GNU Affero General Public License v3.0 (Post-2023)
+All contributions made after 2023 are licensed under the GNU Affero General Public License v3.0.
+The full text of this license can be found in the AGPL-3.0.txt file or at:
+https://www.gnu.org/licenses/agpl-3.0.en.html
+Contribution Guidelines
+
+All new contributions must be licensed under AGPL-3.0
+Contributors acknowledge and agree that their contributions will be licensed under AGPL-3.0
+The MIT license remains in effect for all code committed prior to 2023
