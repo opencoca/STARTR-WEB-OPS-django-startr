@@ -12,11 +12,11 @@ from six import iteritems
 
 class Startr(object):
     """
-        Given a dictionary of apps and models, Startr will bake up a bunch of files that will help get your new app up
+        Given a dictionary of apps and models, Startr will startr up a bunch of files that will help get your new app up
         and running quickly.
     """
 
-    def bake(self, apps_and_models):
+    def startr(self, apps_and_models):
         """
             Iterates a dictionary of apps and models and creates all the necessary files to get up and running quickly.
         """
@@ -118,7 +118,7 @@ class Startr(object):
         with open(file_path, 'w') as new_file:
 
             new_file.write(get_template(template_path).render(context_variables))
-            print("\033[92m" + "successfully baked " + file_path + "\033[0m")
+            print("\033[92m" + "successfully startrd " + file_path + "\033[0m")
 
     def remove_empty_startapp_files(self, app):
         """
