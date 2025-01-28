@@ -1,8 +1,8 @@
-from django.conf.urls import include, url
+from django.urls import include, re_path  # Changed import
 
-app_name="{{ app_label }}"
+app_name = "{{ app_label }}"
 
 urlpatterns = [
 {% for model_name_slug, plural_model_name_slug in model_names_dict.items %}
-    url(r'^{{ plural_model_name_slug }}/', include('{{ app_label }}.urls.{{ model_name_slug }}_urls')),{% if forloop.first %}  # NOQA{% endif %}{% endfor %}
+    re_path(r'^{{ plural_model_name_slug }}/', include('{{ app_label }}.urls.{{ model_name_slug }}_urls')),{% if forloop.first %}  # NOQA{% endif %}{% endfor %}
 ]
