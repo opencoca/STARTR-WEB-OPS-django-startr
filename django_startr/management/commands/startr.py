@@ -12,7 +12,7 @@ class Command(BaseCommand):
     args = "appname:modelname,modelname2,modelname3"
     help = ("Generates generic views (create, update, detail, list, and delete), urls, forms, and admin for model in an"
             "app.  Optionally can restrict which apps are generated on a per app basis.\n\nexample: python manage.py "
-            "startr bread:Sesame,Pumpkernickel donut:Glazed,Chocolate")
+            "startr techrocket:MissionControl,LaunchSite orbitalspace:SpaceStation,Satellites,SpaceShuttle")
 
     def add_arguments(self, parser):
         # Positional arguments
