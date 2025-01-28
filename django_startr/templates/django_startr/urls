@@ -1,4 +1,4 @@
-from django.urls import re_path  # Changed from django.conf.urls import url
+from django.urls import re_path  
 from ..views import ({{ model_name }}ListView, {{ model_name }}CreateView, {{ model_name }}DetailView,
                      {{ model_name }}UpdateView, {{ model_name }}DeleteView)
 from django.contrib.auth.decorators import login_required

@@ -3,6 +3,7 @@ from __future__ import print_function
 from django.core.management.base import BaseCommand, CommandError
 from django.core.exceptions import ImproperlyConfigured
 from django.apps import apps
+from django.urls import reverse, NoReverseMatch
 
 from ...startry import Startr
 
@@ -21,6 +22,9 @@ class Command(BaseCommand):
         ingredients = self.parse_startr_options(options["apps_and_models"])
         startr = Startr()
         startr.startr(ingredients)
+        
+        # Check if login URL is configured
+        self.check_login_url()
 
     def parse_startr_options(self, apps_and_models):
         """
@@ -60,6 +64,20 @@ class Command(BaseCommand):
             try:
                 return [app.get_model(model_name) for model_name in model_names]
             except:
-                raise CommandError("One or more of the models you entered for %s are incorrect." % app_label)
+                raise CommandError("One or more of the models you entered for %s are incorrect." % app.label)
         else:
             return app.get_models()
+
+    def check_login_url(self):
+        """
+            Checks if login URL is properly configured and warns if not.
+        """
+        try:
+            reverse('login')
+        except NoReverseMatch:
+            self.stdout.write(self.style.WARNING(
+                "\nWARNING: The login URL (accounts/login/) is not configured.\n"
+                "To enable login redirects, add to your project's urls.py:\n"
+                "    path('accounts/', include('django.contrib.auth.urls')),\n"
+                "And ensure 'django.contrib.auth' is in INSTALLED_APPS.\n"
+            ))
