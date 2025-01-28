@@ -1,0 +1,15 @@
+{% extends "admin/login.html" %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'login'%}">Login</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<p>Logged out!</p>
+<a href="{% url 'login'%}?next=/">Click here to login again.</a>
+{% endblock %}
