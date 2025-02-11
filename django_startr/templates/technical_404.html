@@ -1,0 +1,62 @@
+{# django_startr/technical_404.html #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Page not found (404)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .url-patterns {
+            margin: 1em 0;
+            padding: 0;
+        }
+        .url-patterns li {
+            list-style: none;
+            margin: 0.25em 0;
+        }
+        .url-patterns a {
+            color: #2b6dad;
+            text-decoration: none;
+        }
+        .url-patterns a:hover {
+            text-decoration: underline;
+        }
+        .debug-info {
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page not found (404)</h1>
+    <p>
+        The path <code>{{ request_path }}</code> did not match any of these URL patterns:
+    </p>
+
+    <ul class="url-patterns">
+        {% comment %}
+          "tried" is a list of lists. Each element is a "route" possibility.
+          We flatten them for demonstration and create real links for each pattern.
+        {% endcomment %}
+        {% for route_list in tried %}
+            {% for route in route_list %}
+                <li>
+                    <a href="{{ route.regex.pattern|safe }}">{{ route.regex.pattern }}</a>
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+
+    <hr />
+
+    <div class="debug-info">
+        <p>You’re seeing this error because you have <code>DEBUG = True</code> in your Django settings file. 
+        Change that to <code>False</code>, and Django will display a standard 404 page.</p>
+    </div>
+
+</body>
+</html>
