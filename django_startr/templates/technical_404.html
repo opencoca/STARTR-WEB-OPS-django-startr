@@ -42,7 +42,11 @@
 <body>
     <h1>Page not found (404)</h1>
     <p>
-        The path <code>{{ request_path }}</code> did not match any URL pattern.
+        The web address <code>{{ request_path }}</code> was not found on this site.
+        {% if request_path != "/" %}
+            <br>
+            You can <a href="../">go to the parent directory</a>.
+        {% endif %}
     </p>
     
     {% if grouped_urls %}
