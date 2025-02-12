@@ -36,6 +36,8 @@ class Startr(object):
                 model_attributes = self.model_attributes(app, model)
                 self.create_files_from_templates(model_attributes)
 
+        self.ensure_debug_urls_in_project("/project/our_site/our_site/urls.py")
+
     def get_field_names_for_model(self, model):
         """
         Returns fields other than id and uneditable fields (DateTimeField where auto_now or auto_now_add is True)
@@ -64,7 +66,8 @@ class Startr(object):
             content = f.read()
 
         required_lines = [
-            "from django.urls import path, re_path, include"
+            "from django.urls import path, re_path, include",
+            "from django.conf import settings",
             "from django_startr.views import debug_index",
             "handler404 = 'django_startr.views.debug_index'",
             "if settings.DEBUG:",
@@ -85,6 +88,9 @@ class Startr(object):
             #     with open(project_urls_path, 'a') as f:
             #         f.write("\n\n# Startr Debug URLs\n" + "\n".join(required_lines) + "\n")
             #     print("Updated urls.py with debug URL configuration.")
+        else:
+            print("\033[92m[Startr] Your project's urls.py is already configured for debugging.\033[0m")
+            print("\033[92m[Startr] If you encounter 404 errors, ensure that DEBUG is set to True in your settings.py.\033[0m")
 
 
     def create_init_files(self, app, model_names, models):
