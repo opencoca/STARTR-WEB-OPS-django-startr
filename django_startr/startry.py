@@ -25,7 +25,7 @@ class Startr(object):
             models = list(models)
             model_names = {model.__name__: self.get_field_names_for_model(model) for model in models}
             self.create_directories(app)
-            self.create_debug_404_template(app)
+            #self.create_debug_404_template(app)
             self.create_init_files(app, model_names.keys(), models)
             self.remove_empty_startapp_files(app)
             for file_name in ["forms", "admin"]:
@@ -55,17 +55,17 @@ class Startr(object):
             if not os.path.exists(directory_path):
                 os.makedirs(directory_path)
 
-    def create_debug_404_template(self, app):
-        """
-        Creates our custom debug 404 template (technical_404.html) that Django uses
-        when DEBUG = True, overriding the default Django debug template.
-        """
-        # For example: <your_app_path>/templates/technical_404.html
-        file_path = os.path.join(app.path, 'templates', 'technical_404.html')
-        # You can store your custom 404 debug template in 'django_startr/technical_404.html'
-        template_path = 'django_startr/technical_404.html'
+    # def create_debug_404_template(self, app):
+    #     """
+    #     Creates our custom debug 404 template (technical_404.html) that Django uses
+    #     when DEBUG = True, overriding the default Django debug template.
+    #     """
+    #     # For example: <your_app_path>/templates/technical_404.html
+    #     file_path = os.path.join(app.path, 'templates', 'technical_404.html')
+    #     # You can store your custom 404 debug template in 'django_startr/technical_404.html'
+    #     template_path = 'django_startr/technical_404.html'
 
-        self.create_file_from_template(file_path, template_path, {})
+    #     self.create_file_from_template(file_path, template_path, {})
 
 
     def create_init_files(self, app, model_names, models):

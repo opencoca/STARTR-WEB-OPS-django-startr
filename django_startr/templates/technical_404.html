@@ -1,0 +1,79 @@
+{# django_startr/technical_404.html #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Page not found (404)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .app-section {
+            margin: 1em 0;
+        }
+        .app-section h2 {
+            margin-bottom: 0.5em;
+            font-size: 1.2em;
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            margin: 0.25em 0;
+        }
+        a {
+            color: #2b6dad;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .debug-info {
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 1em;
+            margin-top: 2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page not found (404)</h1>
+    <p>
+        The path <code>{{ request_path }}</code> did not match any URL pattern.
+    </p>
+    
+    {% if grouped_urls %}
+        {% for app, urls in grouped_urls.items %}
+            <div class="app-section">
+                <h2>{{ app }}</h2>
+                <ul>
+                {% for url in urls %}
+                    <li>
+                        {% comment %} 
+                        If the URL contains parameters (like <id>) display it as code.
+                        Otherwise, create a link.
+                        {% endcomment %}
+                        {% if "<" in url %}
+                            <code>{{ url }}</code>
+                        {% else %}
+                            <a href="{{ base_path }}{{ url }}">{{ url }}</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No matching sub-URLs were found under this path.</p>
+    {% endif %}
+
+    <hr />
+    <div class="debug-info">
+        <p>You’re seeing this error because <code>DEBUG = True</code> in your Django settings.</p>
+        <p>If you’d like to auto-generate views and templates for these URLs, please refer to the Startr documentation.</p>
+    </div>
+</body>
+</html>
