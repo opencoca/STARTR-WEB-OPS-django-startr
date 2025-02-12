@@ -5,8 +5,8 @@
 {% verbatim %}{% endblock %}{% endverbatim %}
 
 {% verbatim %}{% block content %}{% endverbatim %}
-<h1><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>{{ model_name }}</a></h1>
-<h2>Create {{ model_name }}</h2>
+<h2><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>{{ model_name }}</a></h2>
+<h3>Create {{ model_name }}</h3>
 
 <form action="" method="post">{% verbatim %}{% csrf_token %}{% endverbatim %}
     {% verbatim %}{{ form.as_p }}{% endverbatim %}

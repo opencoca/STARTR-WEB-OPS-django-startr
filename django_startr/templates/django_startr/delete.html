@@ -5,7 +5,7 @@
 {% verbatim %}{% endblock %}{% endverbatim %}
 
 {% verbatim %}{% block content %}{% endverbatim %}
-<h1>Delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}</h1>
+<h2>Delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}</h2>
 
 <form action="" method="post">{% verbatim %}{% csrf_token %}{% endverbatim %}
     <p>Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?</p>
