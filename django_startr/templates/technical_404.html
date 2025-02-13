@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Page not found (404)</title>
+    <link rel="stylesheet" href="https://startr.style/style.css">
     <style>
         body {
             font-family: sans-serif;
@@ -57,10 +58,6 @@
                     <ul>
                     {% for url in urls %}
                         <li>
-                            {% comment %}
-                            If the URL contains parameters (like <id>) display it as code.
-                            Otherwise, create a link.
-                            {% endcomment %}
                             {% if "<" in url %}
                                 <code>{{ url }}</code>
                             {% else %}
