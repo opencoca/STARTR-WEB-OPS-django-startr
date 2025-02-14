@@ -17,11 +17,13 @@
                 font-size: 1.5em;
             }
 
+            h3 {
+                font-size: 1.2em;
+            }
+
             .debug-info {
                 background: #f9f9f9;
-                border: 1px solid #ccc;
                 padding: 1em;
-                margin-top: 2em;
             }
         </style>
     </head>
@@ -76,10 +78,8 @@
 
         </main-aria>
         <hr />
-        <div class="debug-info">
-            <p>You’re seeing this error because <code>DEBUG = True</code> in your Django settings.</p>
-            <p>If you’d like to auto-generate views and templates for these URLs, please refer to the Startr
-                documentation.</p>
+        <div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10;">
+            <p style="--m:auto">You’re seeing this 404 page because <code>DEBUG = True</code> in your Django settings.</p>
         </div>
     </body>
 
