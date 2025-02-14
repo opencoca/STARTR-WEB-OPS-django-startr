@@ -17,7 +17,7 @@
         url "{{ app_label }}:{{ model_name_slug }}_detail" 
         {{ model_name_slug }}.{{ lookup_field }} 
     {% templatetag closeblock %}
-    > Cancel</a>
+    > Cancel </a>
 <form style="display:inline;" 
     action={% templatetag openblock %} 
         url "{{ app_label }}:{{ model_name_slug }}_delete" 

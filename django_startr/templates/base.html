@@ -1,8 +1,8 @@
 {% load static %}
-<html>
+<html style="--bg:lightblue">
 
   <head>
-    <title>Oursite</title>
+    <title>The Study</title>
     <link rel="stylesheet" type="text/css" href="https://startr.style/style.css">
     <style>
       body {
@@ -62,26 +62,21 @@
     {% block head_content %}{% endblock %}
   </head>
 
-  <body style="--m: 2em auto; --maxw: 649px">
-    <h1>Our Site</h1>
+  <body style="--m: 2em auto; --maxw: 649px; --bg:white; --p:1em">
+    <h1>The Study </h1>
     {% if request_path != "/" %}
     You can <a href="../">go to the parent directory</a>.
-{% endif %}
+    {% endif %}
     {% if user.is_authenticated %}
     <a href="{% url 'logout'%}">Logout</a>
     {% else %}
     <a href="{% url 'login'%}">Login</a>
     {% endif %}
 
-    <div id="swup" class="content container transition-fade">
-      <div class="row">
-        <div class="col-md-8">
-          {% block content %}
-          {% endblock %}
-        </div>
-      </div>
 
-    </div>
+    {% block content %}
+    {% endblock %}
+
 
   </body>
 
