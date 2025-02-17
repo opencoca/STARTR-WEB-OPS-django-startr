@@ -11,7 +11,7 @@
         <ul>
             {% for field in model_fields %}
                 <li>
-                    {{ field }}: {% templatetag openvariable %} {{ model_name_slug }}.{{ field }} {% templatetag closevariable %}
+                    {{ field.name }}: {% templatetag openvariable %} {{ model_name_slug }}.{{ field }} {% templatetag closevariable %}
                 </li>
             {% endfor %}
         </ul>

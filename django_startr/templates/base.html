@@ -41,12 +41,13 @@
   --fd: column;
   --jc: space-between;
 "><main-aria>
-      <title-bar style="--d:flex;--fd: row;--jc: center;--ai: center; gap:0.6em">
+      <title-bar style="--d:flex;--fd: row;--jc: center;--ai: center; gap:0.6em; flex-wrap: wrap">
         <img style="--h:3em"
         src="https://assets.codepen.io/170881/Study_Logo_H_Blue-Crest.png" alt="" />
         <h1>The Study</h1>
+        <hr style="--b: 0.2em solid #005894; --fg:4; " />
       </title-bar>
-      <hr style="--b: 0.2em solid #005894" />
+      
       {% if request_path != "/" %}
       You can <a href="../">go to the parent directory</a>.
       {% endif %}
