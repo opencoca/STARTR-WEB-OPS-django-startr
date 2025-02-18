@@ -1,4 +1,5 @@
 {% load static %}
+<!DOCTYPE html>
 <html style="--bg:#AAD7D4">
 
   <head>
@@ -51,12 +52,12 @@
       You can <a href="../">go to the parent directory</a>.
       {% endif %}
       {% if user.is_authenticated %}
-      <a href="{% url 'logout'%}">Logout</a>
+      <a style="--ft:right; --mr:0.2em" href="{% url 'logout'%}">Logout</a>
       {% if user.is_staff or user.is_superuser %}
-      <a href="{% url 'admin:index'%}">Admin</a>
+      <a style="--ft:right; --mr:0.2em" href="{% url 'admin:index'%}">Admin</a>
       {% endif %}
       {% else %}
-      <a href="{% url 'login'%}">Login</a>
+      <a style="--ft:right; --mr:0.2em"  href="{% url 'login'%}">Login</a>
       {% endif %}
 
 
