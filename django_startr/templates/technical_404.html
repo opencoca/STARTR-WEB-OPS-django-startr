@@ -47,7 +47,9 @@
 {% block footer %}
 <hr />
 <div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10;">
-    <p style="--m:auto">You're seeing this Startr 404 page because <code>DEBUG = True</code> in your Django settings and because the URL you requested does not yet exist. </p>
+    <p style="--ta:center">The URL you requested does not yet exist. You're seeing this Startr 404 page because <code>DEBUG = True</code> in your Django settings.</p>
+    <p style="--m:auto; --size:0.6em">Add a view and template for this URL or edit the <code>django_startr technical_404.html</code> template to customize this message.</p>
+    <p style="--m:auto; --size:0.6em">You can also turn off this page by setting <code>DEBUG = False</code> in your Django settings, but then you'll see the default Django 404 page.</p>
 </div>
 {% endblock %}
 </body>
