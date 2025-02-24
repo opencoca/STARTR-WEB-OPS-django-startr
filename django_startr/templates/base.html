@@ -39,14 +39,14 @@
   --maxw: 649px;
   --bg: #F0EFE3;
   --p: 1em;
-  --br: 0.6em;
+  --br-sm: 0.6em;
   --shadow: 6;
   --minh: calc(100vh - 4em);
   --d: flex;
   --fd: column;
   --jc: space-between;
 "><main-aria>
-            <title-bar style="--d:flex;--fd: row;--jc: center;--ai: center; gap:0.6em; --bb: 0.4em solid #005894; --mb:0.6em ">
+            <title-bar style="--d:flex; --fd:column; --fd-sm: row;--jc: center;--ai: center; gap:0.6em; --bb: 0.4em solid #005894; --mb:0.6em ">
               <a href="/" style="--c:#005894;"><img style="--h:3em"
               src="https://assets.codepen.io/170881/Study_Logo_H_Blue-Crest.png" alt="" /></a>
               <a href="/" style="--c:#005894;"><h1>The Study's Particip8</h1></a>
@@ -56,8 +56,9 @@
       You can <a href="../">go to the parent directory</a>.
       {% endif %}
       {% if user.is_authenticated %}
-      <a style="--ft:right; --mr:0.2em" href="{% url 'logout'%}">Logout</a>
+      <a style="--ft:right; --ml:0.2em" href="{% url 'logout'%}">Logout</a>
       {% if user.is_staff or user.is_superuser %}
+      <span style="--ft:right; --c:lightgrey">|</span>
       <a style="--ft:right; --mr:0.2em" href="{% url 'admin:index'%}">Admin</a>
       {% endif %}
       {% else %}
