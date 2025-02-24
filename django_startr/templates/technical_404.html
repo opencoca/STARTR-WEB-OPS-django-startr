@@ -31,7 +31,7 @@
             {% if "<" in url %}
             <code>{{ url }}</code>
             {% else %}
-            <a href="{{ base_path }}{{ url }}">{{ url }}</a>
+            <a href="{{ base_path }}{{ url }}">{{ url|replace:"_| "|replace:"/| "|capitalize }}</a>
             {% endif %}
         </li>
         {% endfor %}
