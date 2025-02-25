@@ -13,12 +13,4 @@ def replace(value, arg):
     what, to = arg.split('|')
     return value.replace(what, to)
 
-@register.filter
-def capitalize(value):
-    """
-    Capitalize filter
-    Use `{{ "aaa"|capitalize }}`
-    """
-    if not isinstance(value, str):
-        return value
-    return str(value).strip().capitalize()
+
