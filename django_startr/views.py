@@ -115,5 +115,5 @@ def debug_index(request, exception=None):
         "base_path": base_prefix,
         "grouped_urls": sorted_grouped,
     }
-    html = render_to_string("technical_404.html", context)
+    html = render_to_string("technical_404.html", context, request=request)
     return HttpResponseNotFound(html)
