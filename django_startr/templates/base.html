@@ -1,7 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
 <html style="
-  --bg:{% if user.is_authenticated %}#005894{% else %}#AAD7D4{% endif %}
+  --bg:{% if user.is_authenticated %}{% if user.is_staff or user.is_superuser %} #005894{% else %} #00AAAD{% endif %}{% else %}
+   #AAD7D4
+   {% endif %}
   " >
 
   <head>
@@ -44,7 +46,7 @@
   --p: 1em;
   --br-sm: 0.6em;
   --shadow: 6;
-  --minh: calc(100vh - 4em);
+  --minh: calc(100vh - 6em);
   --d: flex;
   --fd: column;
   --jc: space-between;
