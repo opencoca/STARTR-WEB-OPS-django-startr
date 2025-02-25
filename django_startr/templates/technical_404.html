@@ -1,7 +1,7 @@
 {# django_startr/technical_404.html #}
 {% extends "base.html" %}
 {% load startr_filters %}
-{% block title %}{{ request_path|replace:"/| "|capitalize  }}{% endblock %}
+{% block title %}{{ request_path|replace:"/| "|capfirst  }}{% endblock %}
 {% block content %}
 
 <p>
@@ -18,13 +18,13 @@
 {% if app != "Django_Startr" %}
 <div class="app-section">
     <h2>{{ app }}</h2>
-    <ul>
+    <ul style="--lis: none;">
         {% for url in urls %}
         <li>
             {% if "<" in url %}
             <code>{{ url }}</code>
             {% else %}
-            <a href="{{ base_path }}{{ url }}">{{ url|replace:"_| "|replace:"/| "|capitalize }}</a>
+            <a href="{{ base_path }}{{ url }}">{{ url|replace:"_| "|replace:"/| "|capfirst  }}</a>
             {% endif %}
         </li>
         {% endfor %}
