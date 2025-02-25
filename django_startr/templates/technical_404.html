@@ -5,8 +5,8 @@
 {% block content %}
 
 <p>
-    {% if request_path != "/" %}<a href="../">Go to the parent section</a> or one of the subsections.
-    {% else %}You are at the root. Go to one of the following subsections.
+    {% if request_path != "/" %}
+    {% else %}Try one of the sections below.
     {% endif %}
 
     
@@ -39,7 +39,10 @@
 
 {% block footer %}
 <hr />
-<div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10;">
+
+{% if user.is_authenticated %}<img src="https://assets.codepen.io/170881/STU_Boomer-with_shirt.png" alt=""
+    style="--w: 30px; --bottom: 0; --right: 0; --mb: -2em;--ml: 80%;" />{% endif %}
+<div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10; --mt:0">
     <p style="--ta:center">The URL you requested does not yet exist. You're seeing this <a href="https://startr.cloud">Startr</a> 404 page because <code>DEBUG = True</code> in your Django settings.</p>
     <p style="--m:auto; --size:0.6em">Add a view and template for this URL or edit the <code>django_startr technical_404.html</code> template to customize this message.</p>
     <p style="--m:auto; --size:0.6em">You can also turn off this page by setting <code>DEBUG = False</code> in your Django settings, but then you'll see the default Django 404 page.</p>
