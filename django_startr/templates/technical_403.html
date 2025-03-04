@@ -5,14 +5,14 @@
 {% block content %}
 
 <div class="error-container" style="--ta:center; --mt:2em;">
-    <h1 style="--c:#e74c3c">403 Permission Denied</h1>
-    <p style="--mb:2em">You don't have permission to access this resource.</p>
+    <h1 style="--c:var(--pink)">Permission Denied</h1>
+    <p>You don't have permission to access this.</p>
 
     {% if user.is_authenticated %}
-        <p>Your current account doesn't have the required permissions for this action.</p>
+        <p>Your current account doesn't have the required permission.</p>
         {% if request.path != "/" %}
             <p style="--mt:1em">You can try:</p>
-            <ul style="--lis:none; --ta:center">
+            <ul style="--lis:none; --ta:center; --p:0">
                 <li><a href="javascript:history.back()">Going back to the previous page</a></li>
                 <li><a href="/">Returning to the homepage</a></li>
                 {% if not user.is_staff %}
@@ -21,7 +21,7 @@
             </ul>
         {% endif %}
     {% else %}
-        <p>Please <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to access this resource.</p>
+        <p>Please <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to access this page.</p>
     {% endif %}
 </div>
 
