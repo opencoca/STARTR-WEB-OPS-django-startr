@@ -15,7 +15,7 @@
 
 {% if grouped_urls %}
 {% for app, urls in grouped_urls.items %}
-{% if app != "Django_Startr" %}
+{% if app != "Django_Startr" and app != "Authentication and Authorization" %}
 <div class="app-section">
     <h2>{{ app }}</h2>
     <ul style="--lis: none;">
