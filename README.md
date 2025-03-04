@@ -1,162 +1,258 @@
 # Django Startr Code
 
-Django Startr is here to turbocharge your project setup! With just a few commands, it auto-generates everything you need—views, forms, URLs, admin, and templates—for all the models in your `models.py`. Say goodbye to tedious boilerplate and hello to more time for innovation.
+Django Startr is here to turbocharge your project setup! With just a few commands, it auto-generates everything you need. Django Startr is a powerful tool that eliminates boilerplate code by automatically generating complete CRUD functionality for your Django models. With a single command, it creates:
 
-Just add one URL pattern to your project's URLconf, and you're off! You’ll have list, detail, create, update, and delete views for every model in your app, ready to go.
+- Class-based views (List, Detail, Create, Update, Delete)
+- Forms for your models
+- URL configurations
+- Admin interfaces
+- Templates with a clean, customizable design
 
-If you want more control, you can choose which models to start from and skip the rest. Everything’s plug-and-play, and totally customizable.
+## ⚡ Quick Start
 
----
+### Installation
 
-## Installing
-
-You can either clone the repository and install it manually, or add it as a submodule or use pip:
+Choose one of these installation methods:
 
 ```bash
+# Using pip
 pip install django-startr
+
+# Using git submodule (recommended for customization)
+git submodule add https://github.com/Startr/STARTR-django-code.git our_submodules/STARTR-django-code
+ln -s our_submodules/STARTR-django-code/django_startr django_startr
 ```
 
-Add `'django_startr'` to `INSTALLED_APPS`.
-
----
-
-## Usage
-
-Imagine your project is called **TechRocket**, and it has an app `mission`.
-
-```bash
-python manage.py startapp mission
-```
-At this point define your models in the `models.py` file in the `mission` app. Once you have defined your models, you can run the following command to generate the necessary files for all the models in both apps.
-
-
-```bash
-python manage.py startr mission:Rocket,MissionControl
-```
-This command generates the necessary files for all the models in both apps. If you only want specific models, like `Rocket` and `MissionControl`, you can narrow it down:
-
-
-
-To connect everything, add one URL pattern to your project's URLconf:
-
-```bash
-(r'^mission/', include('mission.urls')),
-```
-
-And voilà, you’ll have a working URL structure like this:
-
-```
-/mission/rocket
-/mission/missioncontrol
-```
-
-If you want shorter URLs:
+Add to your `settings.py`:
 
 ```python
-(r'^rocket/', include('mission.urls.rocket_urls')),
-(r'^missioncontrol/', include('mission.urls.missioncontrol_urls')),
+INSTALLED_APPS = [
+    # ...
+    'django_startr',
+    # ...
+]
 ```
 
-Now you’ve got:
+### Basic Usage
+
+1. Create your Django app and define your models:
+
+```bash
+python manage.py startapp store
+```
+
+2. Define your models in `store/models.py`:
+
+```python
+from django.db import models
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True)
+    
+    def __str__(self):
+        return self.name
+```
+
+3. Run migrations:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+4. Generate CRUD functionality:
+
+```bash
+python manage.py startr store
+```
+
+5. Add to your project's `urls.py`:
+
+```python
+from django.urls import path, include
+
+urlpatterns = [
+    # ...
+    path('store/', include('store.urls')),
+    # ...
+]
+```
+
+That's it! You now have a fully functional admin interface and CRUD views for your models!
+
+## 🔍 Detailed Usage
+
+### Selective Generation
+
+You can specify which models to generate for:
+
+```bash
+# Generate for specific models only
+python manage.py startr store:Product,Category
+
+# Generate for multiple apps
+python manage.py startr store:Product inventory:Item,Warehouse
+```
+
+### URL Structure
+
+Django Startr creates intuitive URL patterns:
 
 ```
-/rocket
-/missioncontrol
+# List view
+/store/product/
+# Detail view
+/store/product/1/
+# Create view
+/store/product/create/
+# Update view
+/store/product/1/update/
+# Delete view
+/store/product/1/delete/
 ```
 
----
+For shorter URLs, you can import specific URL modules:
 
-## Views
+```python
+# In your project's urls.py
+path('products/', include('store.urls.product_urls')),
+```
 
-We keep things tidy by creating a `views` directory, where each model gets its own views file (e.g., `rocket_views.py`). There’s also an `__init__.py` file that imports all the views, making it easy to call what you need.
+This gives you cleaner URLs like `/products/` instead of `/store/product/`.
 
-Almost every method you can override in Django’s CBVs (class-based views) is stubbed out for you, so you can quickly jump in and customize as needed. The attributes and methods are laid out in the order they’re called for convenience.
+## 🛠️ Customization
 
----
+### Views
 
-### Niceties Included:
+Django Startr creates views in a `views` directory, with a separate file for each model:
 
-- **form_class** is set to a `ModelForm` in your `forms.py`.
-- **context_object_name** is a clean, slugified version of your model name (e.g., `rockets` for `DetailView`, or `rockets_list` for `ListView`).
-- If your model has a unique slug field, it's automatically set as the `slug_field` and `slug_url_kwarg`.
-- **get_success_url** sends users to the object’s `DetailView` after updates or deletes.
+```
+store/
+├── views/
+│   ├── __init__.py
+│   ├── product_views.py
+│   └── category_views.py
+```
 
----
+Each view file contains class-based views with all common methods stubbed out for easy overriding:
 
-## Templates
+```python
+# Example of a generated ProductListView
+class ProductListView(ListView):
+    model = Product
+    template_name = "store/product_list.html"
+    paginate_by = 20
+    context_object_name = "product_list"
+    
+    def get_queryset(self):
+        # Override this method to customize your queryset
+        return super().get_queryset()
+        
+    def get_context_data(self, **kwargs):
+        # Override this method to add extra context
+        return super().get_context_data(**kwargs)
+```
 
-The generated templates are kept minimalist, so you can easily modify them to fit your style. Each extends a model-specific base file (e.g., `rocket_base.html`), which extends your project’s `base.html`.
+### Templates
 
-- The `ListView` template includes links to view, update, and delete items, plus an option to create new ones.
-- The `DetailView` shows the object and links to update or delete it.
-- The `CreateView` and `UpdateView` display a form and link back to the list view.
-- The `DeleteView` has a confirmation button and links back to the list view.
+Generated templates extend a model-specific base template, which in turn extends your project's `base.html`:
 
----
+```
+templates/
+├── base.html                  # Your project's base template
+└── store/
+    ├── product_base.html      # Base template for product
+    ├── product_list.html
+    ├── product_detail.html
+    ├── product_form.html
+    └── product_confirm_delete.html
+```
 
-## Admin Setup
+This hierarchical approach makes it easy to customize templates at different levels.
 
-For each model, Django Startr generates a `ModelAdmin` using a custom mixin that makes setting up your admin interface super simple. By default, Django Startr guesses intelligent options for `list_display`, `list_filter`, and `search_fields` to give you a full-featured admin panel without the hassle.
+### Admin Interface
 
----
+Django Startr creates an intelligent ModelAdmin for each model with:
 
-### Some Extras:
+- Sensible defaults for `list_display` based on your model fields
+- Smart `list_filter` setup for appropriate field types
+- Automatic `search_fields` for text fields
+- Performance optimizations with `list_select_related`
 
-- **list_select_related**: Automatically set for all foreign key fields, improving query performance.
-- **list_display**: Includes all model fields except the `id` and `ManyToManyFields`.
-- **list_filter**: Smart filtering for fields with `choices`, booleans, and foreign keys with fewer than 100 related objects.
-- **search_fields**: Automatically set for `CharField` and `TextField`.
+Example generated admin:
 
----
+```python
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'description')
+    search_fields = ('name', 'description')
+    list_filter = ('price',)
+```
 
-## The Future of Django Startr
+## 📋 Best Practices
 
-Our top three goals are:
+### Project Structure
 
-1. Allow models to be regenerated when new ones are added.
-2. Automatically generate tests for each app and model.
-3. Add tests to Django Startr itself.
+For large projects, consider organizing your code as follows:
 
-Pull requests are always welcome!
+```
+myproject/
+├── apps/                      # Your Django apps
+│   ├── store/
+│   └── inventory/
+├── our_submodules/            # Git submodules
+│   └── STARTR-django-code/
+├── django_startr -> our_submodules/STARTR-django-code/django_startr
+├── templates/                 # Project-wide templates
+│   └── base.html
+└── manage.py
+```
 
----
+### Customization Flow
 
-## License
+1. Generate the initial code
+2. Customize views for specific business logic
+3. Enhance templates with your design
+4. Extend the admin interface for advanced features
+
+### Regeneration
+
+When adding new models, you can safely regenerate code:
+
+1. Back up any customized files
+2. Run `python manage.py startr your_app:NewModel`
+3. Merge your customizations back in
+
+## 🚀 Planned Features
+
+1. **Change Detection**: Automatically detect model changes and update generated code while preserving customizations
+2. **Test Generation**: Create basic unit and integration tests for models and views
+3. **API Integration**: Generate Django REST Framework serializers and viewsets
+4. **Documentation**: Generate Swagger/OpenAPI documentation for your models
+5. **Form Enhancement**: Add support for crispy-forms and more advanced form layouts
+6. **Theming System**: Provide multiple template themes with easy switching
+7. **Admin Customization**: More advanced admin features like filters, actions, and inline forms
+8. **Internationalization**: Better i18n support in generated templates
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b new-feature`
+3. Commit your changes: `git commit -am 'Add new feature'`
+4. Push to the branch: `git push origin new-feature`
+5. Submit a pull request
+
+## 📜 License
 
 Copyright 2023-2025 12787326 Canada Inc.
 
-Licensed under the AGPLv3: https://opensource.org/licenses/agpl-3.0
+Django Startr is dual-licensed:
+- Pre-2023 code: MIT License
+- Post-2023 code: AGPLv3
 
-Dual License Notice
-This project is dual-licensed under two licenses:
+See [LICENSE.md](LICENSE.md) for full details.
 
-All code and contributions prior to 2023 are licensed under the MIT License
-All code and contributions from 2023 onwards are licensed under the GNU Affero General Public License v3.0 (AGPL-3.0)
-
-MIT License (Pre-2023)
-Copyright (c) 2015 Kris Fields.
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-GNU Affero General Public License v3.0 (Post-2023)
-All contributions made after 2023 are licensed under the GNU Affero General Public License v3.0.
-The full text of this license can be found in the AGPL-3.0.txt file or at:
-https://www.gnu.org/licenses/agpl-3.0.en.html
-Contribution Guidelines
-
-All new contributions must be licensed under AGPL-3.0
-Contributors acknowledge and agree that their contributions will be licensed under AGPL-3.0
-The MIT license remains in effect for all code committed prior to 2023
