@@ -2,14 +2,14 @@
 
 from django.conf import settings
 from django.apps import apps
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseForbidden
 from django.urls import get_resolver, URLPattern, URLResolver
 from django.template.loader import render_to_string
 import re
 
 def debug_index(request, exception=None):
     """
-    A custom debug view to replace Django’s default 404 debug page.
+    A custom debug view to replace Django's default 404 debug page.
     It examines the current URL, finds the URL node that matched,
     then lists the direct sub-URLs (grouped by app and sorted).
     """
@@ -35,7 +35,7 @@ def debug_index(request, exception=None):
         found = False
         for pattern in matched_patterns:
             if isinstance(pattern, URLResolver):
-                # Check if this include’s prefix (as a regex or route) matches the segment.
+                # Check if this include's prefix (as a regex or route) matches the segment.
                 regex = getattr(pattern.pattern, "regex", None)
                 if regex and regex.match(seg + "/"):
                     matched_patterns = pattern.url_patterns
@@ -47,7 +47,7 @@ def debug_index(request, exception=None):
                 if regex and regex.match(seg + "/"):
                     prefix_matched_count = i + 1
                     # If this pattern is a final view and there are still segments left,
-                    # then we’ve reached a dead end.
+                    # then we've reached a dead end.
                     if i < len(segments) - 1:
                         found = False
                     else:
@@ -117,3 +117,16 @@ def debug_index(request, exception=None):
     }
     html = render_to_string("technical_404.html", context, request=request)
     return HttpResponseNotFound(html)
+
+def debug_permission_denied(request, exception=None):
+    """
+    A custom debug view to replace Django's default 403 debug page.
+    Provides a more user-friendly permission denied message with helpful actions.
+    """
+    # Only show this in DEBUG mode
+    if not settings.DEBUG:
+        return HttpResponseForbidden("<h1>403 – Permission Denied</h1>")
+    
+    # Render our custom technical 403 template
+    html = render_to_string("technical_403.html", {}, request=request)
+    return HttpResponseForbidden(html)
