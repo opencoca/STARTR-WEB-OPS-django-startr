@@ -1,13 +1,48 @@
-{% extends "admin/login.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }}{% endblock %}
+{% block title %}- Login{% endblock %}
 
-{% block branding %}
-<div id="site-name"><a href="{% url 'login'%}">Login</a></div>
-{% if user.is_anonymous %}
-  {% include "admin/color_theme_toggle.html" %}
-{% endif %}
-{% endblock %}
 {% block content %}
-    {{ block.super }}
+<card>
+    <h2>Sign In</h2>
+    
+    {% if welcome_message %}
+        <p>{{ welcome_message }}</p>
+    {% endif %}
+    
+    {% if form.errors %}
+        <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p style="--c: #0275d8;">Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</p>
+        {% else %}
+            <p style="--c: #0275d8;">Please login to access this page.</p>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        <div style="--mb: 1em;">
+            <label for="id_username">{{ form.username.label }}</label>
+            {{ form.username }}
+        </div>
+        
+        <div style="--mb: 1em;">
+            <label for="id_password">{{ form.password.label }}</label>
+            {{ form.password }}
+        </div>
+        
+        <button type="submit" style="--bg: #005894; --c: white; --p: 0.5em 1em; --br: 0.3em; --border: none; --weight: bold; cursor: pointer; --w: 100%; --mb: 1em;">Log In</button>
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+    
+    <div style="--ta: center; --mt: 1em;">
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    </div>
+</card>
 {% endblock %}
