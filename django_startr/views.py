@@ -6,6 +6,47 @@ from django.http import HttpResponseNotFound, HttpResponseForbidden
 from django.urls import get_resolver, URLPattern, URLResolver
 from django.template.loader import render_to_string
 import re
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django import forms
+
+# Registration form with additional fields
+class UserRegistrationForm(UserCreationForm):
+    """Form for user registration."""
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        if commit:
+            user.save()
+        return user
+
+def register_view(request):
+    """View for registering a new user"""
+    if request.user.is_authenticated:
+        return redirect('accounts:dashboard')
+        
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, "Your account has been created successfully! You can now log in.")
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+        
+    return render(request, 'registration/register.html', {'form': form})
 
 def debug_index(request, exception=None):
     """

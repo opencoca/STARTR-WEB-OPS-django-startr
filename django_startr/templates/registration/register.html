@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}- Sign Up{% endblock %}
+
+{% block title-bar %}
+<title-bar
+    style="--d:flex; --fd:column; --fd-sm: row;--jc: center;--ai: center; --mb:0.6em ">
+
+    <img src="{% static 'images/The_Study.webp' %}" alt="The Study" class="logo">
+</title-bar>
+{% endblock %}
+
+{% block back-button %}
+{% endblock %}
+
+{% block auth-links %}
+{% endblock %}
+
+{% block content %}
+<card>
+    <h2>Sign Up</h2>
+
+    {% if messages %}
+    <div style="--mb: 1em;">
+        {% for message in messages %}
+        <p style="--c: {% if message.tags == 'success' %}#28a745{% elif message.tags == 'error' %}#d9534f{% else %}#0275d8{% endif %}; --weight: bold;">
+            {{ message }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+
+        <div style="--mb: 1em;">
+            <label for="id_username" style="--c: #005894; --weight: bold;">{{ form.username.label }}</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+            <p style="--c: #d9534f; --fs: 0.8em;">{{ form.username.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div style="--mb: 1em;">
+            <label for="id_first_name" style="--c: #005894; --weight: bold;">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+            <p style="--c: #d9534f; --fs: 0.8em;">{{ form.first_name.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div style="--mb: 1em;">
+            <label for="id_last_name" style="--c: #005894; --weight: bold;">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}
+            <p style="--c: #d9534f; --fs: 0.8em;">{{ form.last_name.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div style="--mb: 1em;">
+            <label for="id_email" style="--c: #005894; --weight: bold;">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <p style="--c: #d9534f; --fs: 0.8em;">{{ form.email.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div style="--mb: 1em;">
+            <label for="id_password1" style="--c: #005894; --weight: bold;">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+            <p style="--c: #d9534f; --fs: 0.8em;">{{ form.password1.errors.0 }}</p>
+            {% endif %}
+            <small style="--c: #6c757d; --d: block; --mt: 0.25em;">{{ form.password1.help_text }}</small>
+        </div>
+
+        <div style="--mb: 1em;">
+            <label for="id_password2" style="--c: #005894; --weight: bold;">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+            <p style="--c: #d9534f; --fs: 0.8em;">{{ form.password2.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" style="
+                --bg: #005894; 
+                --c: white; 
+                --p: 0.5em 1em; 
+                --br: 0.3em; 
+                --border: none;
+                --weight: bold;
+                cursor: pointer;
+                --w: 100%;
+                --mb: 1em;
+            ">Sign Up</button>
+    </form>
+    
+    <div style="--ta: center; --mt: 1em;">
+        <p>Already have an account? <a href="{% url 'login' %}" style="--c: #005894; --weight: bold;">Sign In</a></p>
+    </div>
+
+</card>
+{% endblock %}

@@ -61,6 +61,12 @@
             {{ form.password }}
         </div>
 
+        <div style="
+        --ta: right; 
+    ">
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    </div>
+
         <button type="submit" style="
                 --bg: #005894; 
                 --c: white; 
@@ -71,17 +77,13 @@
                 cursor: pointer;
                 --w: 100%;
                 --mb: 1em;
-            ">
-                Sign
-            In</button>
+            ">Sign In</button>
         <input type="hidden" name="next" value="{{ next }}">
     </form>
-
-    <div style="
-        --ta: center; 
-        --mt: 1em;
-    ">
-        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    
+    <div style="--ta: center; --mt: 1em;">
+        <p>Don't have an account? <a href="{% url 'register' %}" style="--c: #005894; --weight: bold;">Sign Up</a></p>
     </div>
+
 </card>
 {% endblock %}
