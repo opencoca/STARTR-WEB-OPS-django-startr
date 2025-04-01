@@ -3,45 +3,84 @@
 
 {% block title %}- Login{% endblock %}
 
+{% block title-bar %}
+<title-bar
+    style="--d:flex; --fd:column; --fd-sm: row;--jc: center;--ai: center; --mb:0.6em ">
+
+    <img src="{% static 'images/The_Study.webp' %}" alt="The Study" class="logo">
+</title-bar>
+{% endblock %}
+
+{% block back-button %}
+{% endblock %}
+
+{% block auth-links %}
+{% endblock %}
+
 {% block content %}
 <card>
     <h2>Sign In</h2>
-    
+
     {% if welcome_message %}
-        <p>{{ welcome_message }}</p>
+    <p>{{ welcome_message }}</p>
     {% endif %}
-    
+
     {% if form.errors %}
-        <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
+    <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
     {% endif %}
 
     {% if next %}
-        {% if user.is_authenticated %}
-            <p style="--c: #0275d8;">Your account doesn't have access to this page. To proceed,
-            please login with an account that has access.</p>
-        {% else %}
-            <p style="--c: #0275d8;">Please login to access this page.</p>
-        {% endif %}
+    {% if user.is_authenticated %}
+    <p style="--c: #0275d8;">Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+    {% else %}
+    <p style="--c: #0275d8;">Please login to access this page.</p>
+    {% endif %}
     {% endif %}
 
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        
-        <div style="--mb: 1em;">
-            <label for="id_username">{{ form.username.label }}</label>
+
+        <div style="
+            --mb: 1em;
+        ">
+            <label for="id_username" style="
+                --c: #005894; 
+                --weight: bold;
+            ">{{ form.username.label }}</label>
             {{ form.username }}
         </div>
-        
-        <div style="--mb: 1em;">
-            <label for="id_password">{{ form.password.label }}</label>
+
+        <div style="
+            --mb: 1em;
+        ">
+            <label for="id_password" style="
+                --c: #005894; 
+                --weight: bold;
+            ">{{ form.password.label }}</label>
             {{ form.password }}
         </div>
-        
-        <button type="submit" style="--bg: #005894; --c: white; --p: 0.5em 1em; --br: 0.3em; --border: none; --weight: bold; cursor: pointer; --w: 100%; --mb: 1em;">Log In</button>
+
+        <button type="submit" style="
+                --bg: #005894; 
+                --c: white; 
+                --p: 0.5em 1em; 
+                --br: 0.3em; 
+                --border: none;
+                --weight: bold;
+                cursor: pointer;
+                --w: 100%;
+                --mb: 1em;
+            ">
+                Sign
+            In</button>
         <input type="hidden" name="next" value="{{ next }}">
     </form>
-    
-    <div style="--ta: center; --mt: 1em;">
+
+    <div style="
+        --ta: center; 
+        --mt: 1em;
+    ">
         <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
     </div>
 </card>
