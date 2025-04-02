@@ -67,13 +67,14 @@
     {% endblock %}
 
     {% block back-button %}
-    {% if request_path != "/" %}
-    <a href="../" style="--weight:bold; --c:#005894;">&nbsp;< <!--{{ request_path|replace:"/| "|replace:" |"|capfirst
-        }}--></a>
-    {% endif %}
+
     {% endblock %}
 
     {% block auth-links %}
+    {% if request_path != "/" %}
+    <a href="../" style="--weight:bold; --c:#005894; --m:0.2em">&nbsp;< <!--{{ request_path|replace:"/| "|replace:" |"|capfirst
+        }}--></a>
+    {% endif %}
     {% if user.is_authenticated %}
     <a style="--ft:right; --ml:0.2em" href="{% url 'logout'%}">Logout</a>
     {% if user.is_staff or user.is_superuser %}

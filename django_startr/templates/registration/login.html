@@ -39,21 +39,21 @@
         {% if welcome_message %}
         <p>{{ welcome_message }}</p>
         {% endif %}
+
+
+        {% if form.errors %}
+        <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p style="--c: #0275d8;">Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</p>
+        {% else %}
+        <p style="--c: #0275d8;">Please login to access this page.</p>
+        {% endif %}
+        {% endif %}
     </section>
-
-    {% if form.errors %}
-    <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
-    {% endif %}
-
-    {% if next %}
-    {% if user.is_authenticated %}
-    <p style="--c: #0275d8;">Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-    {% else %}
-    <p style="--c: #0275d8;">Please login to access this page.</p>
-    {% endif %}
-    {% endif %}
-
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
 
