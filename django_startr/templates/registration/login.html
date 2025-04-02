@@ -4,8 +4,7 @@
 {% block title %}- Login{% endblock %}
 
 {% block title-bar %}
-<title-bar
-    style="--d:flex; --fd:column; --fd-sm: row;--jc: center;--ai: center; --mb:0.6em ">
+<title-bar style="--d:flex; --fd:column; --fd-sm: row;--jc: center;--ai: center; --mb:0.6em ">
 
     <img src="{% static 'images/The_Study.webp' %}" alt="The Study" class="logo">
 </title-bar>
@@ -19,11 +18,28 @@
 
 {% block content %}
 <card>
-    <h2>Sign In</h2>
+    <section style="
+        --d: flex;
+        --fd: column;
+        --jc: center;
+        --ai: center;
+        --weight:bold;
+        --c:#005894;
+        --mb: 0.6em;">
+        <h2>
+            {% if title %}
+            {{ title }}
+            {% else %}
+            Sign In
+            {% endif %}
+        </h2>
 
-    {% if welcome_message %}
-    <p>{{ welcome_message }}</p>
-    {% endif %}
+
+
+        {% if welcome_message %}
+        <p>{{ welcome_message }}</p>
+        {% endif %}
+    </section>
 
     {% if form.errors %}
     <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
@@ -64,8 +80,8 @@
         <div style="
         --ta: right; 
     ">
-        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
-    </div>
+            <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+        </div>
 
         <button type="submit" style="
                 --bg: #005894; 
@@ -80,7 +96,7 @@
             ">Sign In</button>
         <input type="hidden" name="next" value="{{ next }}">
     </form>
-    
+
     <div style="--ta: center; --mt: 1em;">
         <p>Don't have an account? <a href="{% url 'register' %}" style="--c: #005894; --weight: bold;">Sign Up</a></p>
     </div>
