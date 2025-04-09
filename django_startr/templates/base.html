@@ -34,6 +34,22 @@
       padding: 1em;
       margin-top: 2em;
     }
+
+    input[type="file"] {
+      -webkit-appearance: none;
+      text-align: left;
+      -webkit-rtl-ordering: left;
+      padding: 0;
+      border: none;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+      -webkit-appearance: none;
+    }
+
+    button{
+      width: 60%;
+    }
   </style>
   <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon.ico' %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -72,8 +88,8 @@
 
     {% block auth-links %}
     {% if request_path != "/" %}
-    <a href="../" style="--weight:bold; --c:#005894; --m:0.2em">&nbsp;< <!--{{ request_path|replace:"/| "|replace:" |"|capfirst
-        }}--></a>
+    <a href="../" style="--weight:bold; --c:#005894; --m:0.2em">&nbsp;< <!--{{ request_path|replace:"/| "|replace:"
+        |"|capfirst }}--></a>
     {% endif %}
     {% if user.is_authenticated %}
     <a style="--ft:right; --ml:0.2em" href="{% url 'logout'%}">Logout</a>
