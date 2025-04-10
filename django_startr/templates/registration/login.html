@@ -4,7 +4,7 @@
 {% block title %}- Login{% endblock %}
 
 {% block title-bar %}
-<title-bar style="--d:flex; --fd:column; --fd-sm: row;--jc: center;--ai: center; --mb:0.6em ">
+<title-bar style="--d:flex; --fd:column; --fd-sm:row; --jc:center; --ai:center; --mb:0.6em">
 
     <img src="{% static 'images/The_Study.webp' %}" alt="The Study" class="logo">
 </title-bar>
@@ -18,14 +18,7 @@
 
 {% block content %}
 <card>
-    <section style="
-        --d: flex;
-        --fd: column;
-        --jc: center;
-        --ai: center;
-        --weight:bold;
-        --c:#005894;
-        --mb: 0.6em;">
+    <section style="--d:flex; --fd:column; --jc:center; --ai:center; --weight:bold; --c:#005894; --mb:0.6em">
         <h2>
             {% if title %}
             {{ title }}
@@ -42,63 +35,41 @@
 
 
         {% if form.errors %}
-        <p style="--c: #d9534f; --weight: bold;">Your username and password didn't match. Please try again.</p>
+        <p style="--c:#d9534f; --weight:bold">Your username and password didn't match. Please try again.</p>
         {% endif %}
 
         {% if next %}
         {% if user.is_authenticated %}
-        <p style="--c: #0275d8;">Your account doesn't have access to this page. To proceed,
+        <p style="--c:#0275d8">Your account doesn't have access to this page. To proceed,
             please login with an account that has access.</p>
         {% else %}
-        <p style="--c: #0275d8;">Please login to access this page.</p>
+        <p style="--c:#0275d8">Please login to access this page.</p>
         {% endif %}
         {% endif %}
     </section>
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
 
-        <div style="
-            --mb: 1em;
-        ">
-            <label for="id_username" style="
-                --c: #005894; 
-                --weight: bold;
-            ">{{ form.username.label }}</label>
+        <div style="--mb:1em">
+            <label for="id_username" style="--c:#005894; --weight:bold">{{ form.username.label }}</label>
             {{ form.username }}
         </div>
 
-        <div style="
-            --mb: 1em;
-        ">
-            <label for="id_password" style="
-                --c: #005894; 
-                --weight: bold;
-            ">{{ form.password.label }}</label>
+        <div style="--mb:1em">
+            <label for="id_password" style="--c:#005894; --weight:bold">{{ form.password.label }}</label>
             {{ form.password }}
         </div>
 
-        <div style="
-        --ta: right; 
-    ">
+        <div style="--ta:right">
             <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
         </div>
 
-        <button type="submit" style="
-                --bg: #005894; 
-                --c: white; 
-                --p: 0.5em 1em; 
-                --br: 0.3em; 
-                --border: none;
-                --weight: bold;
-                cursor: pointer;
-                --w: 100%;
-                --mb: 1em;
-            ">Sign In</button>
+        <button type="submit" style="--bg:#005894; --c:white; --p:0.5em 1em; --br:0.3em; --border:none; --weight:bold; --cur:pointer; --w:100%; --mb:1em">Sign In</button>
         <input type="hidden" name="next" value="{{ next }}">
     </form>
 
-    <div style="--ta: center; --mt: 1em;">
-        <p>Don't have an account? <a href="{% url 'register' %}" style="--c: #005894; --weight: bold;">Sign Up</a></p>
+    <div style="--ta:center; --mt:1em">
+        <p>Don't have an account? <a href="{% url 'register' %}" style="--c:#005894; --weight:bold">Sign Up</a></p>
     </div>
 
 </card>
