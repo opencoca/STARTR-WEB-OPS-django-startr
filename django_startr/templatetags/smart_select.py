@@ -83,9 +83,9 @@ def smart_select_js():
 
             // Show options on focus
             input.addEventListener('focus', () => {
-                if (input.value) {
-                    list.style.display = 'block';
-                }
+                // Show all options when focused
+                options.forEach(li => li.style.display = 'block');
+                list.style.display = 'block';
             });
 
             // Hide options on blur
