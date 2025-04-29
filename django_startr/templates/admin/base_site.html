@@ -1,18 +1,28 @@
-{% extends "admin/base_site.html" %}
-{% load smart_select %}
-
-{% block extrahead %}
-{{ block.super }}
+{% extends "admin/base_site.html" %} {% load smart_select %} {% block extrahead %} {{ block.super }}
 <style>
-.related-widget-wrapper{
-    overflow: visible !important;
-}
+  .module {
+    overflow-x: scroll;
+  }
 
-.smart-select-wrapper {
+  .column-years {
+    min-width: 6rem;
+  }
+
+  .related-widget-wrapper {
+    overflow: visible !important;
+  }
+
+  .form-row {
+    overflow: visible !important;
+  }
+
+  .smart-select-wrapper {
     position: relative;
     margin-bottom: 10px;
-}
-.smart-options {
+    min-width: 10rem;
+    padding: 0 0.6rem 0 0;
+  }
+  .smart-options {
     position: absolute;
     z-index: 1000;
     background: white;
@@ -25,29 +35,26 @@
     margin: 0;
     padding: 0;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.smart-options li {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .smart-options li {
     padding: 8px 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
-}
-.smart-options li:hover {
+  }
+  .smart-options li:hover {
     background: #f5f5f5;
-}
-.smart-select-wrapper input {
+    position: relative;
+    z-index: 1001;
+  }
+  .smart-select-wrapper input {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-.smart-options li.highlighted {
+  }
+  .smart-options li.highlighted {
     background: #f0f0f0;
-}
+  }
 </style>
-{% endblock %}
-
-{% block footer %}
-{{ block.super }}
-{% smart_select_js %}
-{% endblock %} 
+{% endblock %} {% block footer %} {{ block.super }} {% smart_select_js %} {% endblock %}

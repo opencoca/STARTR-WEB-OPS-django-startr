@@ -34,6 +34,14 @@ def smart_select_js():
             const list = document.createElement('ul');
             list.className = 'smart-options';
             list.style.display = 'none';  // Ensure hidden by default
+            list.style.position = 'absolute';
+            list.style.zIndex = '1001';
+            list.style.width = '100%';
+            list.style.maxHeight = '200px';
+            list.style.overflowY = 'auto';
+            list.style.backgroundColor = '#fff';
+            list.style.border = '1px solid #ccc';
+            list.style.padding = '0';
 
             // Create options from the original select, filtering out empty choices
             const options = Array.from(originalSelect.options)
