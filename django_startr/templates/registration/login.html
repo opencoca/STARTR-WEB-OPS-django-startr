@@ -27,12 +27,21 @@
             {% endif %}
         </h2>
 
-
-
         {% if welcome_message %}
         <p>{{ welcome_message }}</p>
         {% endif %}
 
+        {% if messages %}
+        <div style="--w:100%; --mb:1em">
+            {% for message in messages %}
+            <div style="--p:1em; --mb:1em; --bgc:{% if message.tags == 'success' %}#d4edda{% elif message.tags == 'error' %}#f8d7da{% else %}#cce5ff{% endif %}; --b:1px solid {% if message.tags == 'success' %}#c3e6cb{% elif message.tags == 'error' %}#f5c6cb{% else %}#b8daff{% endif %}; --br:0.25em;">
+                <p style="--c:{% if message.tags == 'success' %}#155724{% elif message.tags == 'error' %}#721c24{% else %}#004085{% endif %}; --weight:bold; --m:0;">
+                    {{ message }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
         {% if form.errors %}
         <p style="--c:#d9534f; --weight:bold">Your username and password don't match an active account. Please try again.</p>
