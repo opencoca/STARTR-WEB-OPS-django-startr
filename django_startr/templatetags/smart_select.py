@@ -11,10 +11,11 @@ def smart_select_js():
     return mark_safe("""
     <script>
     function convertSelectToSmartSelect(originalSelect) {
-        // Skip if already converted or if it's a hidden select
+        // Skip if already converted, hidden, or is a multiple select
         if (originalSelect.classList.contains('smart-select-converted') || 
             originalSelect.style.display === 'none' ||
-            originalSelect.offsetParent === null) {
+            originalSelect.offsetParent === null ||
+            originalSelect.multiple) {
             return;
         }
         
@@ -133,16 +134,16 @@ def smart_select_js():
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Convert existing select elements
-        document.querySelectorAll('select:not(.smart-select-converted)').forEach(convertSelectToSmartSelect);
+        // Convert existing select elements, excluding multiple selects
+        document.querySelectorAll('select:not(.smart-select-converted):not([multiple])').forEach(convertSelectToSmartSelect);
 
         // Set up MutationObserver to watch for new elements
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
                     if (node.nodeType === 1) { // Element node
-                        // Check the added node and its children for select elements
-                        node.querySelectorAll('select:not(.smart-select-converted)').forEach(convertSelectToSmartSelect);
+                        // Check the added node and its children for select elements, excluding multiple selects
+                        node.querySelectorAll('select:not(.smart-select-converted):not([multiple])').forEach(convertSelectToSmartSelect);
                     }
                 });
             });
