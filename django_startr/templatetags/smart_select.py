@@ -33,30 +33,33 @@ def smart_select_js():
 
             const list = document.createElement('ul');
             list.className = 'smart-options';
+            list.style.display = 'none';  // Ensure hidden by default
 
-            // Create options from the original select
-            const options = Array.from(originalSelect.options).map(option => {
-                const li = document.createElement('li');
-                li.textContent = option.textContent;
-                li.dataset.value = option.value;
-                
-                li.addEventListener('click', () => {
-                    input.value = option.textContent;
-                    originalSelect.value = option.value;
-                    list.style.display = 'none';
+            // Create options from the original select, filtering out empty choices
+            const options = Array.from(originalSelect.options)
+                .filter(option => option.textContent.trim() !== '---------')
+                .map(option => {
+                    const li = document.createElement('li');
+                    li.textContent = option.textContent;
+                    li.dataset.value = option.value;
                     
-                    // Trigger change event on original select
-                    const event = new Event('change', { bubbles: true });
-                    originalSelect.dispatchEvent(event);
+                    li.addEventListener('click', () => {
+                        input.value = option.textContent;
+                        originalSelect.value = option.value;
+                        list.style.display = 'none';
+                        
+                        // Trigger change event on original select
+                        const event = new Event('change', { bubbles: true });
+                        originalSelect.dispatchEvent(event);
+                    });
+                    
+                    list.appendChild(li);
+                    return li;
                 });
-                
-                list.appendChild(li);
-                return li;
-            });
 
-            // Set initial value
+            // Set initial value only if an option is selected
             const selectedOption = originalSelect.options[originalSelect.selectedIndex];
-            if (selectedOption) {
+            if (selectedOption && selectedOption.textContent.trim() !== '---------') {
                 input.value = selectedOption.textContent;
             }
 
@@ -74,12 +77,15 @@ def smart_select_js():
                     }
                 });
                 
-                list.style.display = visible ? 'block' : 'none';
+                // Only show list if there are visible options and input is focused
+                list.style.display = (visible && document.activeElement === input) ? 'block' : 'none';
             });
 
             // Show options on focus
             input.addEventListener('focus', () => {
-                list.style.display = 'block';
+                if (input.value) {
+                    list.style.display = 'block';
+                }
             });
 
             // Hide options on blur
