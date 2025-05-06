@@ -50,6 +50,7 @@
   
   input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField,   .smart-select-wrapper input {
     width: 100%;
+    width: -webkit-fill-available;
     padding: 0.4rem;
     margin: 0 0 0.4rem 0;
     border: 1px solid #ccc;
@@ -57,6 +58,16 @@
   }
   .smart-options li.highlighted {
     background: #f0f0f0;
+  }
+
+  #toolbar #searchbar {
+    height: 1.1875rem;
+    border: 1px solid var(--border-color);
+    padding: 2px 5px;
+    margin: 0.6em;
+    vertical-align: top;
+    font-size: 0.8125rem;
+    max-width: 100%;
   }
 </style>
 {% endblock %} {% block footer %} {{ block.super }} {% smart_select_js %} {% endblock %}
