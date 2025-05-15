@@ -10,6 +10,29 @@
 {% endblock %}
 
 {% block content %}
+<div id="spinner" class="spinner">⠂</div>
 <p>Logged out!</p>
-<a href="{% url 'login'%}?next=/">Click here to login again.</a>
+<a href="{% url 'login'%}?next=/" id="login-link">Click here to login again.</a>
+
+<script>
+const frames = "⠂⠃⠊⠒⠢⠆⠂⠁⠉⠑⠡⠅⠃⠁⠈⠘⠨⠌⠊⠉⠈⠐⠰⠔⠒⠑⠘⠐⠠⠤⠢⠡⠨⠰⠠⠄⠆⠅⠌⠔⠤⠄";
+const spinner = document.getElementById('spinner');
+let i = 0;
+
+const animate = () => {
+    spinner.textContent = frames[i];
+    i = (i + 1) % frames.length;
+}
+setInterval(animate, 100);
+setTimeout(() => {
+  // Use document.referrer if available, otherwise fallback to the login URL.
+  let ref = document.referrer || "{% url 'login' %}";
+  // Append a cache busting parameter based on current timestamp.
+  ref = ref.includes('?') ? ref + '&t=' + Date.now() : ref + '?t=' + Date.now();
+  window.location.href = ref;
+}, 2000);
+</script>
+<style>
+.spinner { font-family: monospace; font-size: 24px; }
+</style>
 {% endblock %}

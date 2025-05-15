@@ -1,0 +1,39 @@
+{# django_startr/technical_403.html #}
+{% extends "base.html" %}
+{% load startr_filters %}
+{% block title %}Permission Denied{% endblock %}
+{% block content %}
+
+<div class="error-container" style="--ta:center; --mt:2em">
+    <h1 style="--c:var(--pink)">Permission Denied</h1>
+    <p>You don't have permission to access this.</p>
+
+    {% if user.is_authenticated %}
+        <p>Your current account doesn't have the required permission.</p>
+        {% if request.path != "/" %}
+            <p style="--mt:1em">You can try:</p>
+            <ul style="--lis:none; --ta:center; --p:0">
+                <li><a href="javascript:history.back()">Going back to the previous page</a></li>
+                <li><a href="/">Returning to the homepage</a></li>
+                {% if not user.is_staff %}
+                    <li>Contacting an administrator for access</li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <p>Please <a href="{% url 'login' %}?next={{ request.path }}">log in</a> to access this page.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<hr />
+{% if user.is_authenticated %}{% endif %}
+<div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10; --mt:0; --z:10">
+    {% include "includes/boomer.html" %}
+    <p style="--ta:center">You're seeing this <a href="https://startr.cloud">Startr</a> 403 page because <code>DEBUG = True</code> in your Django settings.</p>
+    <p style="--m:auto; --size:0.6em">You can customize this message by editing the <code>django_startr technical_403.html</code> template.</p>
+    <p style="--m:auto; --size:0.6em">You can also turn off this page by setting <code>DEBUG = False</code> in your Django settings, but then you'll see the default Django 403 page.</p>
+</div>
+{% endblock %} 

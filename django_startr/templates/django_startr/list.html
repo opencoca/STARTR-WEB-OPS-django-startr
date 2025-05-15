@@ -5,13 +5,22 @@
 {% verbatim %}{% endblock %}{% endverbatim %}
 
 {% verbatim %}{% block content %}{% endverbatim %}
-    <h1>{{ model_name_plural }}</h1>
-    <h2><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_create" {% templatetag closeblock %}>Create new {{ model_name }}</a></h2>
-    <ul>
+    <h2>{{ model_name_plural }}</h2>
+    <h3><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_create" {% templatetag closeblock %}>Create new {{ model_name }}</a></h3>   
+    <hr>
+    <input type="text" placeholder="Search..." id="search" 
+        _="on keyup 
+            if the event's key is 'Escape'
+                set my value to '' 
+                trigger keyup
+            else
+                show <li/> in #{{ model_name_slug }}_list when its textContent.toLowerCase() contains my value.toLowerCase()">  
+    <ul id="{{ model_name_slug }}_list">
     {% templatetag openblock %} for {{ model_name_slug }} in {{ model_name_slug }}_list {% templatetag closeblock %}
-        <li><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_detail" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>{% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}</a> | <a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_update" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>Update</a> | <form style="display:inline;" action={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_delete" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %} method="post" onsubmit="return confirm('Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?')">{% verbatim %}{% csrf_token %}{% endverbatim %}
-    <input type="submit" value="Delete" />
-    </form></li>
+        <li style="display:flex; --ai:center; --jc:space-between">
+            <a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_detail" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>{% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}</a> {% if user.is_authenticated %}| <a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_update" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>Update</a>  <form style="--d:inline" action={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_delete" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %} method="post" onsubmit="return confirm('Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?')">{% verbatim %}{% csrf_token %}{% endverbatim %}
+            <input type="submit" value="Delete" />{% endif %}
+    </li>
     {% verbatim %}{% empty %}{% endverbatim %}
         <li>No {{ model_name_plural }} yet.</li>
     {% verbatim %}{% endfor %}{% endverbatim %}

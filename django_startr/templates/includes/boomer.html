@@ -1,0 +1,12 @@
+{% comment %}
+    Template to include the Boomer mascot image.
+    
+    Usage:
+    {% include "includes/boomer.html" with style="--w:30px; --bottom:0; --right:0" %}
+    
+    The 'style' parameter is optional and will be applied to the image.
+    Default styling will be applied if no style is provided.
+{% endcomment %}
+
+<img src="https://assets.codepen.io/170881/STU_Boomer-with_shirt.png" alt="Boomer mascot"
+    style="{% if style %}{{ style }}{% else %}--w:30px; --bottom:0; --right:0; --mb:-2em; --ml:80%; --pos: relative; --z:5{% endif %}" />

@@ -5,10 +5,18 @@
 {% verbatim %}{% endblock %}{% endverbatim %}
 
 {% verbatim %}{% block content %}{% endverbatim %}
-    <h1><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>{{ model_name }}</a></h1>
-    <h2>{% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %} | <a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_update" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>Update</a> | 
-    <form style="display:inline;" action={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_delete" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %} method="post" onsubmit="return confirm('Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?')">{% verbatim %}{% csrf_token %}{% endverbatim %}
-    <input type="submit" value="Delete" />
+    <h2><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>{{ model_name }}</a></h2>
+    <h3>{% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %} | <a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_update" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>Update</a></h3>   
+<hr>        {% comment %} show all fields {% endcomment %}
+        <ul style="--lis:none">
+            {% for field in model_fields %}
+                <li>
+                    {{ field.name }}: {% templatetag openvariable %} {{ model_name_slug }}.{{ field }} {% templatetag closevariable %}
+                </li>
+            {% endfor %}
+        </ul>
+    <form style="--d:inline" action={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_delete" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %} method="post" onsubmit="return confirm('Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?')">{% verbatim %}{% csrf_token %}{% endverbatim %}
+        {% if user.is_authenticated %}<input type="submit" value="Delete" />{% endif %}
     </form>
-    </h2>
+
 {% verbatim %}{% endblock %}{% endverbatim %}

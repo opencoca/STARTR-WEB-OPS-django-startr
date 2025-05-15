@@ -1,0 +1,55 @@
+{# django_startr/technical_404.html #}
+{% extends "base.html" %}
+{% load startr_filters %}
+{% block title %}{{ request_path|replace:"/| "|capfirst  }}{% endblock %}
+{% block content %}
+
+<p>
+    {% if request_path != "/" %}
+    {% else %}Try one of the sections below.
+    {% endif %}
+
+    
+
+</p>
+
+{% if grouped_urls %}
+{% for app, urls in grouped_urls.items %}
+{% if app != "Django_Startr" and app != "Authentication and Authorization" %}
+<div class="app-section">
+    <h2>{{ app }}</h2>
+    <ul style="--lis:none">
+        {% for url in urls %}
+        <li>
+            {% if "<" in url %}
+            <code>{{ url }}</code>
+            {% else %}
+            <a href="{{ base_path }}{{ url }}">{{ url|replace:"_| "|replace:"/| "|capfirst  }}</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endfor %}
+{% else %}
+<p>No matching sub-URLs were found under this path.</p>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+<hr />
+
+{% if user.is_authenticated %}
+<div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10; --mt:0">
+    {% include "includes/boomer.html" with style="--w:30px; --bottom:0; --right:0;" %}
+    <p style="--ta:center">The URL you requested does not yet exist. You're seeing this <a href="https://startr.cloud">Startr</a> 404 page because <code>DEBUG = True</code> in your Django settings.</p>
+    <p style="--m:auto; --size:0.6em">Add a view and template for this URL or edit the <code>django_startr technical_404.html</code> template to customize this message.</p>
+    <p style="--m:auto; --size:0.6em">You can also turn off this page by setting <code>DEBUG = False</code> in your Django settings, but then you'll see the default Django 404 page.</p>
+</div>
+{% endif %}
+
+{% endblock %}
+</body>
+
+</html>
