@@ -10,16 +10,25 @@ def smart_select_js():
     """
     return mark_safe("""
     <script>
+    // Cache for storing already processed options and elements
+    const smartSelectCache = {
+        convertedSelects: new WeakSet(),
+        optionsCache: new Map()
+    };
+
     function convertSelectToSmartSelect(originalSelect) {
         // Skip if already converted, hidden, or is a multiple select
-        if (originalSelect.classList.contains('smart-select-converted') || 
+        if (smartSelectCache.convertedSelects.has(originalSelect) || 
+            originalSelect.classList.contains('smart-select-converted') || 
             originalSelect.style.display === 'none' ||
             originalSelect.offsetParent === null ||
             originalSelect.multiple) {
             return;
         }
         
+        // Mark as converted both in class and cache
         originalSelect.classList.add('smart-select-converted');
+        smartSelectCache.convertedSelects.add(originalSelect);
 
         const wrapper = document.createElement('div');
         wrapper.className = 'smart-select-wrapper';
@@ -42,27 +51,50 @@ def smart_select_js():
         list.style.border = '1px solid #ccc';
         list.style.padding = '0';
 
-        // Create options from the original select, filtering out empty choices
-        const options = Array.from(originalSelect.options)
-            .filter(option => option.textContent.trim() !== '---------')
-            .map(option => {
-                const li = document.createElement('li');
-                li.textContent = option.textContent;
-                li.dataset.value = option.value;
-                
-                li.addEventListener('click', () => {
-                    input.value = option.textContent;
-                    originalSelect.value = option.value;
-                    list.style.display = 'none';
+        // Get or create options from cache
+        let options;
+        const selectId = originalSelect.id || originalSelect.name || Math.random().toString(36).substring(2);
+        
+        if (smartSelectCache.optionsCache.has(selectId)) {
+            // Use cached options
+            const cachedData = smartSelectCache.optionsCache.get(selectId);
+            options = cachedData.options;
+            
+            // Append cached list items
+            cachedData.items.forEach(li => {
+                list.appendChild(li.cloneNode(true));
+            });
+        } else {
+            // Create options from the original select, filtering out empty choices
+            const cachedItems = [];
+            options = Array.from(originalSelect.options)
+                .filter(option => option.textContent.trim() !== '---------')
+                .map(option => {
+                    const li = document.createElement('li');
+                    li.textContent = option.textContent;
+                    li.dataset.value = option.value;
                     
-                    // Trigger change event on original select
-                    const event = new Event('change', { bubbles: true });
-                    originalSelect.dispatchEvent(event);
+                    li.addEventListener('click', () => {
+                        input.value = option.textContent;
+                        originalSelect.value = option.value;
+                        list.style.display = 'none';
+                        
+                        // Trigger change event on original select
+                        const event = new Event('change', { bubbles: true });
+                        originalSelect.dispatchEvent(event);
+                    });
+                    
+                    list.appendChild(li);
+                    cachedItems.push(li.cloneNode(true));
+                    return li;
                 });
                 
-                list.appendChild(li);
-                return li;
+            // Store in cache for future use
+            smartSelectCache.optionsCache.set(selectId, {
+                options: options,
+                items: cachedItems
             });
+        }
 
         // Set initial value only if an option is selected
         const selectedOption = originalSelect.options[originalSelect.selectedIndex];
@@ -70,28 +102,33 @@ def smart_select_js():
             input.value = selectedOption.textContent;
         }
 
-        // Handle input filtering
+        // Using debounce for input filtering to avoid excessive processing
+        let debounceTimeout;
         input.addEventListener('input', () => {
-            const query = input.value.toLowerCase();
-            let visible = 0;
-            
-            options.forEach(li => {
-                if (li.textContent.toLowerCase().includes(query)) {
-                    li.style.display = 'block';
-                    visible++;
-                } else {
-                    li.style.display = 'none';
-                }
-            });
-            
-            // Only show list if there are visible options and input is focused
-            list.style.display = (visible && document.activeElement === input) ? 'block' : 'none';
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                const query = input.value.toLowerCase();
+                let visible = 0;
+                
+                options.forEach((li, index) => {
+                    const liElement = list.children[index];
+                    if (liElement.textContent.toLowerCase().includes(query)) {
+                        liElement.style.display = 'block';
+                        visible++;
+                    } else {
+                        liElement.style.display = 'none';
+                    }
+                });
+                
+                // Only show list if there are visible options and input is focused
+                list.style.display = (visible && document.activeElement === input) ? 'block' : 'none';
+            }, 100); // 100ms debounce
         });
 
         // Show options on focus
         input.addEventListener('focus', () => {
             // Show all options when focused
-            options.forEach(li => li.style.display = 'block');
+            Array.from(list.children).forEach(li => li.style.display = 'block');
             list.style.display = 'block';
         });
 
@@ -133,27 +170,81 @@ def smart_select_js():
         wrapper.appendChild(originalSelect);
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Convert existing select elements, excluding multiple selects
-        document.querySelectorAll('select:not(.smart-select-converted):not([multiple])').forEach(convertSelectToSmartSelect);
+    function initSmartSelects() {
+        // Use requestIdleCallback if available, otherwise use setTimeout
+        // This helps prioritize critical rendering tasks
+        const scheduleTask = window.requestIdleCallback || 
+            (callback => setTimeout(callback, 1));
+            
+        scheduleTask(() => {
+            // Process selects in batches to avoid blocking the main thread
+            const processSelectBatch = (selects, startIndex, batchSize) => {
+                const endIndex = Math.min(startIndex + batchSize, selects.length);
+                
+                for (let i = startIndex; i < endIndex; i++) {
+                    convertSelectToSmartSelect(selects[i]);
+                }
+                
+                if (endIndex < selects.length) {
+                    scheduleTask(() => processSelectBatch(selects, endIndex, batchSize));
+                }
+            };
+            
+            const selects = Array.from(document.querySelectorAll(
+                'select:not(.smart-select-converted):not([multiple])'
+            ));
+            
+            processSelectBatch(selects, 0, 10); // Process 10 selects at a time
+        });
+    }
 
-        // Set up MutationObserver to watch for new elements
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.nodeType === 1) { // Element node
-                        // Check the added node and its children for select elements, excluding multiple selects
-                        node.querySelectorAll('select:not(.smart-select-converted):not([multiple])').forEach(convertSelectToSmartSelect);
-                    }
+    // Initialize once the DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSmartSelects);
+    } else {
+        initSmartSelects();
+    }
+
+    // Set up a more efficient MutationObserver with throttling
+    let pendingMutations = false;
+    const observer = new MutationObserver((mutations) => {
+        if (!pendingMutations) {
+            pendingMutations = true;
+            
+            // Process mutations in the next animation frame to batch changes
+            requestAnimationFrame(() => {
+                let hasNewSelects = false;
+                
+                // Check if any new selects were added
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) { // Element node
+                            if (node.nodeName === 'SELECT') {
+                                hasNewSelects = true;
+                            } else if (node.querySelectorAll) {
+                                hasNewSelects = hasNewSelects || 
+                                    node.querySelectorAll('select:not(.smart-select-converted):not([multiple])').length > 0;
+                            }
+                        }
+                    });
                 });
+                
+                // Only initialize if new selects were found
+                if (hasNewSelects) {
+                    initSmartSelects();
+                }
+                
+                pendingMutations = false;
             });
-        });
+        }
+    });
 
-        // Start observing the document body for changes
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+    // Start observing with more specific options to reduce overhead
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: false,
+        characterData: false
     });
     </script>
-    """) 
+    """)
