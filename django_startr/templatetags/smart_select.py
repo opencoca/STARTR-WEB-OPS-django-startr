@@ -26,9 +26,11 @@ def smart_select_js():
             return;
         }
         
+
         // Mark as converted both in class and cache
         originalSelect.classList.add('smart-select-converted');
         smartSelectCache.convertedSelects.add(originalSelect);
+
 
         const wrapper = document.createElement('div');
         wrapper.className = 'smart-select-wrapper';
@@ -50,6 +52,7 @@ def smart_select_js():
         list.style.backgroundColor = '#fff';
         list.style.border = '1px solid #ccc';
         list.style.padding = '0';
+
 
         // Get or create options from cache
         let options;
@@ -96,11 +99,13 @@ def smart_select_js():
             });
         }
 
+
         // Set initial value only if an option is selected
         const selectedOption = originalSelect.options[originalSelect.selectedIndex];
         if (selectedOption && selectedOption.textContent.trim() !== '---------') {
             input.value = selectedOption.textContent;
         }
+
 
         // Using debounce for input filtering to avoid excessive processing
         let debounceTimeout;
@@ -123,11 +128,13 @@ def smart_select_js():
                 // Only show list if there are visible options and input is focused
                 list.style.display = (visible && document.activeElement === input) ? 'block' : 'none';
             }, 100); // 100ms debounce
+
         });
 
         // Show options on focus
         input.addEventListener('focus', () => {
             // Show all options when focused
+
             Array.from(list.children).forEach(li => li.style.display = 'block');
             list.style.display = 'block';
         });
@@ -169,6 +176,7 @@ def smart_select_js():
         wrapper.appendChild(list);
         wrapper.appendChild(originalSelect);
     }
+
 
     function initSmartSelects() {
         // Use requestIdleCallback if available, otherwise use setTimeout
@@ -248,3 +256,4 @@ def smart_select_js():
     });
     </script>
     """)
+
