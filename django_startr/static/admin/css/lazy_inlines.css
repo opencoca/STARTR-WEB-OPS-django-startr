@@ -1,0 +1,69 @@
+/* Styles for lazy-loaded inlines */
+
+.lazy-inline-placeholder {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.lazy-inline-button {
+    background-color: #79aec8;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.lazy-inline-button:hover {
+    background-color: #417690;
+}
+
+.lazy-inline-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.lazy-inline-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #417690;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Hide the inline group until it's loaded */
+.inline-group.lazy-loading-pending {
+    display: none;
+}
+
+/* Style for when data is being fetched */
+.lazy-inline-fetching {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Counter for lazy inlines */
+.lazy-inline-counter {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 5px;
+    color: #666;
+}
